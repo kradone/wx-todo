@@ -1,0 +1,35 @@
+<!--pages/index/index.wxml-->
+<!--顶部导航-->
+<view class='topNav'>
+  <view class='tabBar'>
+    <view class='topNavTab {{active == 1 ? "activeBar" : ""}}' bindtap='toActiveOne'>未完成</view>
+    <view class='topNavTab {{active == 2 ? "activeBar" : ""}}' bindtap='toActiveTwo'>已完成</view>
+  </view>
+  <view style='width:100%'>
+    <view class='activeLine {{active == 1 ? "" : "activeRight"}}'></view> 
+  </view>
+</view>
+<!--列表-->
+<scroll-view class='todoList' scroll-y="true" style="height:{{scrollHeight}}px;" wx:if="{{active == 1}}">
+  <block wx:for="{{listData}}" wx:if="{{!item.isFinished}}">
+    <view class='listContainer'>
+      <checkbox class='checkbox' checked="{{item.isFinished}}" bindtap='changeStatus' data-index="{{index}}"/>
+      <view style='width:75%'>{{item.label}}</view>
+      <icon type='clear' bindtap='deleteItem' data-index="{{index}}"></icon>
+    </view>
+  </block>
+</scroll-view>
+<scroll-view class='todoList' scroll-y="true" style="height:{{scrollHeight}}px;" wx:if="{{active == 2}}">
+  <block wx:for="{{listData}}" wx:if="{{item.isFinished}}">
+    <view class='listContainer'>
+      <checkbox class='checkbox' checked="{{item.isFinished}}" bindtap='changeStatus' data-index="{{index}}"/>
+      <view style='width:75%'>{{item.label}}</view>
+      <icon type='clear' bindtap='deleteItem' data-index="{{index}}"></icon>
+    </view>
+  </block>
+</scroll-view>
+<!--底栏-->
+<view class='addNew'>
+  <input class='inputBox' placeholder='请输入待办事项' confirm-type='send' maxlength='30' value='{{inputData}}' bindinput='bindKeyInput' bindconfirm='addItem'></input>
+  <button type='primary' class='inputBtn' bindtap='addItem'>添加</button>
+</view>
